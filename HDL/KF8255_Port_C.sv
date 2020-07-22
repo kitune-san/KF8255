@@ -56,6 +56,10 @@ module KF8255_Port_C (
     logic   obf_a_n;
     logic   ack_a_n;
     logic   intr_a;
+    logic   intr_a_mode2_read;
+    logic   intr_a_mode2_write;
+    logic   intr_a_mode2_read_reg;
+    logic   intr_a_mode2_write_reg;
     logic   inte_a;
     logic   inte_1;
     logic   inte_2;
@@ -125,23 +129,33 @@ module KF8255_Port_C (
     // INTR A
     always_comb begin
         intr_a = port_c_out[3];
+        intr_a_mode2_read  = intr_a_mode2_read_reg;
+        intr_a_mode2_write = intr_a_mode2_write_reg;
 
         casez (group_a_mode_reg)
             `CONTROL_MODE_2: begin
-                if (stb_a_n & ibf_a & inte_2)
-                    intr_a = 1'b1;
+                if (inte_2) begin
+                    if (stb_a_n & ibf_a)
+                        intr_a_mode2_read = 1'b1;
 
-                if (ack_a_n & obf_a_n & inte_1)
-                    intr_a = 1'b1;
+                    if (read_port_a != read_port_a_ff)
+                        if (read_port_a == 1'b1)
+                            intr_a_mode2_read = 1'b0;
+                end
+                else
+                    intr_a_mode2_read = 1'b0;
 
-                if (write_port_a)
-                    intr_a = 1'b0;
+                if (inte_1) begin
+                    if (ack_a_n & obf_a_n)
+                        intr_a_mode2_write = 1'b1;
 
-                if (~inte_2)
-                    intr_a = 1'b0;
+                    if (write_port_a)
+                        intr_a_mode2_write = 1'b0;
+                end
+                else
+                    intr_a_mode2_write = 1'b0;
 
-                if (~inte_1)
-                    intr_a = 1'b0;
+                intr_a = intr_a_mode2_read | intr_a_mode2_write;
             end
             default: begin
                 if (group_a_port_a_io_reg == `PORT_INPUT) begin
@@ -416,6 +430,18 @@ module KF8255_Port_C (
                 default:         port_c_out[3] <= port_c_out[3];
             endcase
     end
+
+    always_ff @(negedge clock, posedge reset) begin
+        if (reset) begin
+            intr_a_mode2_read_reg  <= 1'b0;
+            intr_a_mode2_write_reg <= 1'b0;
+        end
+        else begin
+            intr_a_mode2_read_reg  <= intr_a_mode2_read ;
+            intr_a_mode2_write_reg <= intr_a_mode2_write;
+        end
+    end
+
 
     // PC4 (/STBA(INTE2) | I/O)
     always_ff @(negedge clock, posedge reset) begin
