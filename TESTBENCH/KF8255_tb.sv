@@ -466,10 +466,46 @@ module KF8255_tm();
 
         // Enable INTE1
         TASK_WRITE_DATA(2'b11, 8'b00001101);
-        // Enable INTE2
-        TASK_WRITE_DATA(2'b11, 8'b00001001);
 
         TASK_WRITE_DATA(2'b00, 8'b10101010);
+        #(`TB_CYCLE * 1);
+        port_a_in = 8'b01010101;
+        port_c_in[4] = 1'b0;    // /STBA
+        #(`TB_CYCLE * 1);
+        port_a_in = 8'b00000000;
+        port_c_in[4] = 1'b1;    // /STBA
+        #(`TB_CYCLE * 1);
+        port_c_in[6] = 1'b0;    // /ACKA
+        #(`TB_CYCLE * 1);
+        port_c_in[6] = 1'b1;    // /ACKA
+        #(`TB_CYCLE * 1);
+        TASK_READ_DATA(2'b00);
+        #(`TB_CYCLE * 1);
+
+        // Disable INTE1
+        TASK_WRITE_DATA(2'b11, 8'b00001100);
+        // Enable  INTE2
+        TASK_WRITE_DATA(2'b11, 8'b00001001);
+
+        TASK_WRITE_DATA(2'b00, 8'b11001100);
+        #(`TB_CYCLE * 1);
+        port_a_in = 8'b01010101;
+        port_c_in[4] = 1'b0;    // /STBA
+        #(`TB_CYCLE * 1);
+        port_a_in = 8'b00000000;
+        port_c_in[4] = 1'b1;    // /STBA
+        #(`TB_CYCLE * 1);
+        port_c_in[6] = 1'b0;    // /ACKA
+        #(`TB_CYCLE * 1);
+        port_c_in[6] = 1'b1;    // /ACKA
+        #(`TB_CYCLE * 1);
+        TASK_READ_DATA(2'b00);
+        #(`TB_CYCLE * 1);
+
+        // Enable INTE1
+        TASK_WRITE_DATA(2'b11, 8'b00001101);
+
+        TASK_WRITE_DATA(2'b00, 8'b00110011);
         #(`TB_CYCLE * 1);
         port_a_in = 8'b01010101;
         port_c_in[4] = 1'b0;    // /STBA
