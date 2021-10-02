@@ -5,7 +5,7 @@
 // Written by Kitune-san
 //
 
-`include "KF8255_Definitions.sv"
+`include "KF8255_Definitions.svh"
 
 module KF8255_Control_Logic (
     // Bus
