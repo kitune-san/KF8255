@@ -1,3 +1,5 @@
+`ifndef KF8255_DEFINITIONS_SVH
+`define KF8255_DEFINITIONS_SVH
 
 `define ADDRESS_PORT_A          (2'b00)
 `define ADDRESS_PORT_B          (2'b01)
@@ -11,3 +13,4 @@
 `define PORT_INPUT              (1'b1)
 `define PORT_OUTPUT             (1'b0)
 
+`endif
