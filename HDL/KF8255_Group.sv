@@ -33,7 +33,7 @@ module KF8255_Group (
     //
     always_ff @(negedge clock, posedge reset) begin
         if (reset)
-            mode_select_reg <= `CONTROL_MODE_0;
+            mode_select_reg <= `KF8255_CONTROL_MODE_0;
         else if (write_register)
             mode_select_reg <= internal_data_bus[3:2];
         else

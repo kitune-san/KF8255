@@ -40,10 +40,10 @@ module KF8255_Port (
             port_io <= `PORT_INPUT;
         else
             casez (mode_select_reg)
-                `CONTROL_MODE_0: port_io <= port_io_reg;
-                `CONTROL_MODE_1: port_io <= port_io_reg;
-                `CONTROL_MODE_2: port_io <= (hiz == 1'b0) ? `PORT_OUTPUT
-                                                          : `PORT_INPUT;
+                `KF8255_CONTROL_MODE_0: port_io <= port_io_reg;
+                `KF8255_CONTROL_MODE_1: port_io <= port_io_reg;
+                `KF8255_CONTROL_MODE_2: port_io <= (hiz == 1'b0) ? `PORT_OUTPUT
+                                                                 : `PORT_INPUT;
                 default:         port_io <= port_io_reg;
             endcase
     end
@@ -76,11 +76,11 @@ module KF8255_Port (
             read_tmp <= 8'b00000000;
         else
             casez (mode_select_reg)
-                `CONTROL_MODE_0: read_tmp <= port_in;
-                `CONTROL_MODE_1: read_tmp <= (strobe == 1'b0) ? read_tmp
-                                                              : port_in;
-                `CONTROL_MODE_2: read_tmp <= (strobe == 1'b0) ? read_tmp
-                                                              : port_in;
+                `KF8255_CONTROL_MODE_0: read_tmp <= port_in;
+                `KF8255_CONTROL_MODE_1: read_tmp <= (strobe == 1'b0) ? read_tmp
+                                                                     : port_in;
+                `KF8255_CONTROL_MODE_2: read_tmp <= (strobe == 1'b0) ? read_tmp
+                                                                     : port_in;
                 default:         read_tmp <= read_tmp;
             endcase
     end

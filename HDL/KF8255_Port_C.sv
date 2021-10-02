@@ -133,7 +133,7 @@ module KF8255_Port_C (
         intr_a_mode2_write = intr_a_mode2_write_reg;
 
         casez (group_a_mode_reg)
-            `CONTROL_MODE_2: begin
+            `KF8255_CONTROL_MODE_2: begin
                 if (inte_2) begin
                     if (stb_a_n & ibf_a)
                         intr_a_mode2_read = 1'b1;
@@ -263,7 +263,7 @@ module KF8255_Port_C (
 
         // Group B
         casez (group_b_mode_reg)
-            `CONTROL_MODE_0: begin
+            `KF8255_CONTROL_MODE_0: begin
                 if (group_b_port_c_io_reg == `PORT_OUTPUT) begin
                     port_c_io_comb[0] = `PORT_OUTPUT;
                     port_c_io_comb[1] = `PORT_OUTPUT;
@@ -271,7 +271,7 @@ module KF8255_Port_C (
                     port_c_io_comb[3] = `PORT_OUTPUT;   // if group a is mode 0
                 end
             end
-            `CONTROL_MODE_1: begin
+            `KF8255_CONTROL_MODE_1: begin
                 if (group_b_port_b_io_reg == `PORT_INPUT) begin
                     port_c_io_comb[0] = `PORT_OUTPUT;
                     port_c_io_comb[1] = `PORT_OUTPUT;
@@ -292,7 +292,7 @@ module KF8255_Port_C (
 
         // Group A
         casez (group_a_mode_reg)
-            `CONTROL_MODE_0: begin
+            `KF8255_CONTROL_MODE_0: begin
                 if (group_a_port_c_io_reg == `PORT_OUTPUT) begin
                     port_c_io_comb[4] = `PORT_OUTPUT;
                     port_c_io_comb[5] = `PORT_OUTPUT;
@@ -300,7 +300,7 @@ module KF8255_Port_C (
                     port_c_io_comb[7] = `PORT_OUTPUT;
                 end
             end
-            `CONTROL_MODE_1: begin
+            `KF8255_CONTROL_MODE_1: begin
                 if (group_a_port_a_io_reg == `PORT_INPUT) begin
                     port_c_io_comb[3] = `PORT_OUTPUT;
                     port_c_io_comb[4] = `PORT_INPUT;
@@ -322,7 +322,7 @@ module KF8255_Port_C (
                     end
                 end
             end
-            `CONTROL_MODE_2: begin
+            `KF8255_CONTROL_MODE_2: begin
                     port_c_io_comb[3] = `PORT_OUTPUT;
                     port_c_io_comb[4] = `PORT_INPUT;
                     port_c_io_comb[5] = `PORT_OUTPUT;
@@ -370,9 +370,9 @@ module KF8255_Port_C (
             port_c_out[0] <= 1'b0;
         else
             casez (group_b_mode_reg)
-                `CONTROL_MODE_0: port_c_out[0] <= port_c_out[0];
-                `CONTROL_MODE_1: port_c_out[0] <= intr_b;
-                default:         port_c_out[0] <= port_c_out[0];
+                `KF8255_CONTROL_MODE_0: port_c_out[0] <= port_c_out[0];
+                `KF8255_CONTROL_MODE_1: port_c_out[0] <= intr_b;
+                default:                port_c_out[0] <= port_c_out[0];
             endcase
     end
 
@@ -386,15 +386,15 @@ module KF8255_Port_C (
             port_c_out[1] <= internal_data_bus[1];
         else if (update_group_b_mode)
             casez (update_group_b_mode_reg)
-                `CONTROL_MODE_0: port_c_out[1] <= 1'b0;
-                `CONTROL_MODE_1: port_c_out[1] <= (update_group_b_port_b_io_reg == `PORT_INPUT) ? 1'b0 : 1'b1;
-                default:         port_c_out[1] <= 1'b0;
+                `KF8255_CONTROL_MODE_0: port_c_out[1] <= 1'b0;
+                `KF8255_CONTROL_MODE_1: port_c_out[1] <= (update_group_b_port_b_io_reg == `PORT_INPUT) ? 1'b0 : 1'b1;
+                default:                port_c_out[1] <= 1'b0;
             endcase
         else
             casez (group_b_mode_reg)
-                `CONTROL_MODE_0: port_c_out[1] <= port_c_out[1];
-                `CONTROL_MODE_1: port_c_out[1] <= (group_b_port_b_io_reg == `PORT_INPUT) ? ibf_b : obf_b_n;
-                default:         port_c_out[1] <= 1'b0;
+                `KF8255_CONTROL_MODE_0: port_c_out[1] <= port_c_out[1];
+                `KF8255_CONTROL_MODE_1: port_c_out[1] <= (group_b_port_b_io_reg == `PORT_INPUT) ? ibf_b : obf_b_n;
+                default:                port_c_out[1] <= 1'b0;
             endcase
     end
 
@@ -424,9 +424,9 @@ module KF8255_Port_C (
             port_c_out[3] <= 1'b0;
         else
             casez (group_a_mode_reg)
-                `CONTROL_MODE_0: port_c_out[3] <= port_c_out[3];
-                `CONTROL_MODE_1: port_c_out[3] <= intr_a;
-                `CONTROL_MODE_2: port_c_out[3] <= intr_a;
+                `KF8255_CONTROL_MODE_0: port_c_out[3] <= port_c_out[3];
+                `KF8255_CONTROL_MODE_1: port_c_out[3] <= intr_a;
+                `KF8255_CONTROL_MODE_2: port_c_out[3] <= intr_a;
                 default:         port_c_out[3] <= port_c_out[3];
             endcase
     end
@@ -469,9 +469,9 @@ module KF8255_Port_C (
             port_c_out[5] <= 1'b0;
         else
             casez (group_a_mode_reg)
-                `CONTROL_MODE_0: port_c_out[5] <= port_c_out[5];
-                `CONTROL_MODE_1: port_c_out[5] <= (group_a_port_a_io_reg == `PORT_INPUT) ? ibf_a : port_c_out[5];
-                `CONTROL_MODE_2: port_c_out[5] <= ibf_a;
+                `KF8255_CONTROL_MODE_0: port_c_out[5] <= port_c_out[5];
+                `KF8255_CONTROL_MODE_1: port_c_out[5] <= (group_a_port_a_io_reg == `PORT_INPUT) ? ibf_a : port_c_out[5];
+                `KF8255_CONTROL_MODE_2: port_c_out[5] <= ibf_a;
                 default:         port_c_out[5] <= port_c_out[5];
             endcase
     end
@@ -500,16 +500,16 @@ module KF8255_Port_C (
             port_c_out[7] <= internal_data_bus[7];
         else if (update_group_a_mode)
             casez (update_group_a_mode_reg)
-                `CONTROL_MODE_0: port_c_out[7] <= 1'b0;
-                `CONTROL_MODE_1: port_c_out[7] <= (update_group_a_port_a_io_reg == `PORT_INPUT) ? 1'b0 : 1'b1;
-                `CONTROL_MODE_2: port_c_out[7] <= 1'b1;
+                `KF8255_CONTROL_MODE_0: port_c_out[7] <= 1'b0;
+                `KF8255_CONTROL_MODE_1: port_c_out[7] <= (update_group_a_port_a_io_reg == `PORT_INPUT) ? 1'b0 : 1'b1;
+                `KF8255_CONTROL_MODE_2: port_c_out[7] <= 1'b1;
                 default:         port_c_out[7] <= 1'b0;
             endcase
         else
             casez (group_a_mode_reg)
-                `CONTROL_MODE_0: port_c_out[7] <= port_c_out[7];
-                `CONTROL_MODE_1: port_c_out[7] <= (group_a_port_a_io_reg == `PORT_INPUT) ? port_c_out[7] : obf_a_n;
-                `CONTROL_MODE_2: port_c_out[7] <= obf_a_n;
+                `KF8255_CONTROL_MODE_0: port_c_out[7] <= port_c_out[7];
+                `KF8255_CONTROL_MODE_1: port_c_out[7] <= (group_a_port_a_io_reg == `PORT_INPUT) ? port_c_out[7] : obf_a_n;
+                `KF8255_CONTROL_MODE_2: port_c_out[7] <= obf_a_n;
                 default:         port_c_out[7] <= port_c_out[7];
             endcase
     end
