@@ -46,7 +46,7 @@ module TOP (
     //
     // RESET
     //
-    always_ff @(negedge clock, posedge reset_in) begin
+    always_ff @(posedge clock, posedge reset_in) begin
         if (reset_in) begin
             res_ff <= 1'b1;
             reset  <= 1'b1;
@@ -79,7 +79,7 @@ module TOP (
     assign port_c[6] = (~port_c_io[6]) ? port_c_out[6] : 1'bz;
     assign port_c[7] = (~port_c_io[7]) ? port_c_out[7] : 1'bz;
 
-    always_ff @(negedge clock, posedge reset) begin
+    always_ff @(posedge clock, posedge reset) begin
         if (reset) begin
             port_a_in_ff <= 8'b00000000;
             port_a_in    <= 8'b00000000;
@@ -90,7 +90,7 @@ module TOP (
         end
     end
 
-    always_ff @(negedge clock, posedge reset) begin
+    always_ff @(posedge clock, posedge reset) begin
         if (reset) begin
             port_b_in_ff <= 8'b00000000;
             port_b_in    <= 8'b00000000;
@@ -101,7 +101,7 @@ module TOP (
         end
     end
 
-    always_ff @(negedge clock, posedge reset) begin
+    always_ff @(posedge clock, posedge reset) begin
         if (reset) begin
             port_c_in_ff <= 8'b00000000;
             port_c_in    <= 8'b00000000;
