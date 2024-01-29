@@ -99,10 +99,7 @@ module KF8255_Port_C (
 
     // IBF A
     always_comb begin
-        ibf_a = port_c_out[5];
-
-        if (~stb_a_n)
-            ibf_a = 1'b1;
+        ibf_a = (stb_a_n == 1'b0) ? 1'b1 : port_c_out[5];
 
         if (read_port_a != read_port_a_ff)
             if (read_port_a == 1'b0)
@@ -194,10 +191,7 @@ module KF8255_Port_C (
 
     // IBF B
     always_comb begin
-        ibf_b = port_c_out[1];
-
-        if (~stb_b_n)
-            ibf_b = 1'b1;
+        ibf_b = (stb_b_n == 1'b0) ? 1'b1 : port_c_out[1];
 
         if (read_port_b != read_port_b_ff)
             if (read_port_b == 1'b0)
